@@ -31,11 +31,6 @@ export default defineConfig({
   base: '/', // base public path
   publicDir: 'public', // directory for static assets
 
-  build: {
-    outDir: "../backend/static/frontend",
-    emptyOutDir: true,
-  },
-
   define: {
     global: 'window', // polyfill global for legacy libraries
   },
@@ -74,8 +69,8 @@ export default defineConfig({
   },
 
   build: {
-    outDir: 'dist', // build output folder
-    emptyOutDir: true, // clean outDir before building
+    outDir: "../backend/static/frontend",
+    emptyOutDir: true,
     sourcemap: false, // generate source maps
     minify: 'esbuild', // minification tool
     target: 'es2024', // JS target for transpilation
