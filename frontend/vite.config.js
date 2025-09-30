@@ -31,6 +31,11 @@ export default defineConfig({
   base: '/', // base public path
   publicDir: 'public', // directory for static assets
 
+  build: {
+    outDir: "../backend/static/frontend",
+    emptyOutDir: true,
+  },
+
   define: {
     global: 'window', // polyfill global for legacy libraries
   },
