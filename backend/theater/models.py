@@ -22,3 +22,8 @@ class Ticket(models.Model):
     email = models.EmailField(max_length=254)
     quantity = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Partner(models.Model):
+    name = models.CharField(max_length=200)
+    website = models.URLField(blank=True)
+    logo = models.ImageField()
