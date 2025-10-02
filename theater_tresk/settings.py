@@ -37,7 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django-vite',
 ]
+
+# DJANGO_VITE_DEV_MODE = DEBUG
+# DJANGO_VITE_DEV_SERVER_PORT = 5173
+# DJANGO_VITE_ASSETS_PATH = BASE_DIR / ''
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
