@@ -68,3 +68,17 @@ const updateTranslations = () => {
 
 i18next.on("initialized languageChanged", updateTranslations);
 updateTranslations(); // initial trigger
+
+
+fetch("http://127.0.0.1:8000/api/spectacles/")
+  .then(res => res.json())
+  .then(data => {
+    console.log("Spectacles from API:", data);
+    const list = document.getElementById("spectacle-list");
+    data.forEach(s => {
+      const li = document.createElement("li");
+      li.textContent = `${s.title} (${s.date})`;
+      list.appendChild(li);
+    });
+  });
+
