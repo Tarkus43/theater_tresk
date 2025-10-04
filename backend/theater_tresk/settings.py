@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django_vite',
     'theater',
     'rest_framework',
-    'api',
 ]
 
 # DJANGO_VITE_DEV_MODE = DEBUG
