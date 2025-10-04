@@ -3,7 +3,7 @@ from django.views import View
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Spectacle
-from api.serializers import SpectacleSerializer
+from .api.serializers import SpectacleSerializer
 
 class SpectacleList(APIView):
     def get(self, request):

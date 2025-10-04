@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import User, Spectacle, Ticket, Partner
+from .models import User, Spectacle, Ticket, Partner
 
 admin.site.register(User)
 admin.site.register(Spectacle)
