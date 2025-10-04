@@ -12,30 +12,30 @@
  * 10. configures vitest for unit testing with jsdom and global APIs
  */
 
-import { defineConfig } from 'vite';
-import { configDefaults } from 'vitest/config';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import tailwindcss from '@tailwindcss/postcss';
-import autoprefixer from 'autoprefixer';
-import tailwindConfig from './tailwind.config.js';
+import { defineConfig } from "vite";
+import { configDefaults } from "vitest/config";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+import tailwindcss from "@tailwindcss/postcss";
+import autoprefixer from "autoprefixer";
+import tailwindConfig from "./tailwind.config.js";
 
-import { assetFileNamer, chunkSplitter } from './conf';
+import { assetFileNamer, chunkSplitter } from "./conf";
 
 // derive __dirname in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default defineConfig({
-  root: '.', // project root directory
-  base: '/', // base public path
-  publicDir: 'public', // directory for static assets
+  root: ".", // project root directory
+  base: "/", // base public path
+  publicDir: "public", // directory for static assets
 
   define: {
-    global: 'window', // polyfill global for legacy libraries
+    global: "window", // polyfill global for legacy libraries
   },
 
-  cacheDir: 'node_modules/.vite', // directory for Vite cache
+  cacheDir: "node_modules/.vite", // directory for Vite cache
 
   css: {
     postcss: {
@@ -46,21 +46,21 @@ export default defineConfig({
     },
     preprocessorOptions: {
       scss: {
-        includePaths: ['src/sass'], // sass include directory
+        includePaths: ["src/sass"], // sass include directory
       },
     },
   },
 
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'), // shortcut to src folder
+      "@": path.resolve(__dirname, "./src"), // shortcut to src folder
     },
   },
 
   server: {
-    port: 9999, // dev server port
+    port: 5173, // dev server port
     fs: {
-      allow: ['src', 'public', 'node_modules'], // allow serving files from parent directory
+      allow: ["src", "public", "node_modules", "."], // allow serving files from parent directory
     },
   },
 
@@ -69,21 +69,22 @@ export default defineConfig({
   },
 
   build: {
-    outDir: "../backend/static/frontend",
-    emptyOutDir: true,
+    outDir: "dist", // build output folder
+    emptyOutDir: true, // clean outDir before building
+    manifest: true,
     sourcemap: false, // generate source maps
-    minify: 'esbuild', // minification tool
-    target: 'es2024', // JS target for transpilation
+    minify: "esbuild", // minification tool
+    target: "es2024", // JS target for transpilation
     esbuild: {
-      legalComments: 'none', // remove license comments
+      legalComments: "none", // remove license comments
     },
     commonjsOptions: {
       transformMixedEsModules: true, // support mixed ES/CommonJS
     },
     rollupOptions: {
       output: {
-        entryFileNames: 'js/[name]/[hash].js', // entry chunk naming
-        chunkFileNames: 'js/[name]/[hash].js', // code-split chunk naming
+        entryFileNames: "js/[name]/[hash].js", // entry chunk naming
+        chunkFileNames: "js/[name]/[hash].js", // code-split chunk naming
         assetFileNames: ({ name }) => assetFileNamer({ name }), // asset naming based on type
         manualChunks: (id) => chunkSplitter(id), // custom chunk splitting for vendor modules
       },
@@ -91,12 +92,12 @@ export default defineConfig({
     chunkSizeWarningLimit: 2000, // warn if chunk > 2000kB
   },
 
-  envDir: '.', // directory where .env files are loaded from
-  envPrefix: 'VITE_', // prefix to filter and expose env variables
+  envDir: ".", // directory where .env files are loaded from
+  envPrefix: "VITE_", // prefix to filter and expose env variables
 
   test: {
     globals: true, // using (describe, it, expect) without import
-    environment: 'jsdom', // need for a DOM testing
-    exclude: [...configDefaults.exclude, 'e2e/*'],
+    environment: "jsdom", // need for a DOM testing
+    exclude: [...configDefaults.exclude, "e2e/*"],
   },
 });

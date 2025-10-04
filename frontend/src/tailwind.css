@@ -5,5 +5,5 @@
 !  3. ensure that @config remains immediately after the @import as required
  */
 
-@import 'tailwindcss';
+@import "tailwindcss";
 @config "../tailwind.config.js";

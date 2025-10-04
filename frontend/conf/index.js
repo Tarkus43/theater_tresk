@@ -1,2 +1,2 @@
-export { assetFileNamer } from './assetFileNamer.js';
-export { chunkSplitter } from './chunkSplitter.js';
+export { assetFileNamer } from "./assetFileNamer.js";
+export { chunkSplitter } from "./chunkSplitter.js";

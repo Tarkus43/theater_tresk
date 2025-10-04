@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite",
     "prebuild": "npm run format:fix && npm run lint:fix",
     "build": "vite build",
     "analyze": "vite build --mode analyze",
@@ -30,20 +30,28 @@
     "globals": "^16.0.0",
     "handlebars": "^4.7.8",
     "jsdom": "^26.1.0",
-    "postcss": "^8.5.3",
+    "postcss": "^8.5.6",
     "prettier": "^3.5.3",
-    "tailwindcss": "^4.1.6",
+    "tailwindcss": "^4.1.14",
     "vite": "^6.3.6",
     "vitest": "^3.2.4"
   },
   "dependencies": {
     "axios": "^1.9.0",
     "flag-icons": "^7.3.2",
-    "i18next": "^25.5.2",
+    "i18next": "^25.1.2",
     "i18next-browser-languagedetector": "^8.1.0",
     "i18next-http-backend": "^3.0.2",
     "material-icons": "^1.13.14",
     "normalize.css": "^8.0.1",
     "sass-embedded": "^1.88.0"
-  }
+  },
+  "description": "- **Vite** for fast development server and optimized build. - **Handlebars** for simple, declarative templating without heavy frameworks. - **i18next** with HTTP backend and automatic language detection. - **Tailwind CSS** with custom configuration and Sass integration. - **Sass** for structured, reusable styles and variables. - **Vitest** for unit testing with `jsdom` and global test APIs. - **Normalize.css** , **Material Icons** , **Flag Icons** for ready-to-use global styles and icons. - **ESLint** with recommended rules and browser globals support.",
+  "main": "eslint.config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

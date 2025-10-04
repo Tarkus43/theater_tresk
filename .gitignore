@@ -30,3 +30,6 @@ dist-ssr
 *.sw?
 
 .env
+
+# Node 
+node_modules/

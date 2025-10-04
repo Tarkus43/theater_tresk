@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser
 
 class Spectacle(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False)
@@ -16,7 +17,7 @@ class Spectacle(models.Model):
         return bool(self.tickets_available)
     
 class Ticket(models.Model):
-    spectacle = models.ForeignKey("app.Spectacle",on_delete=models.CASCADE)
+    spectacle = models.ForeignKey("theater.Spectacle",on_delete=models.CASCADE)
     name = models.CharField(max_length=20, blank=False, null=False)
     surname = models.CharField(max_length=50, blank=False, name=False)
     email = models.EmailField(max_length=254)
@@ -27,3 +28,7 @@ class Partner(models.Model):
     name = models.CharField(max_length=200)
     website = models.URLField(blank=True)
     logo = models.ImageField()
+
+
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
