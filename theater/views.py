@@ -10,9 +10,3 @@ class SpectacleList(APIView):
         spectacles = Spectacle.objects.all()
         serializer = SpectacleSerializer(spectacles, many=True)
         return Response(serializer.data)
-
-class TestView(View):
-    http_method_names = ['get']
-
-    def get(self, request):
-        return render(request, 'base.html')
