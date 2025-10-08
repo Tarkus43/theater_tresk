@@ -15,7 +15,7 @@ import 'material-icons/iconfont/material-icons.css';
 import 'flag-icons/css/flag-icons.min.css';
 import '@/sass/styles.scss';
 import '@/tailwind.css';
-import '@/assets/Logo_Tresk!.png';
+import logo from './assets/Logo_Tresk!.png';
 
 // register common helpers
 Handlebars.registerHelper('eq', (a, b) => a === b);
@@ -28,7 +28,9 @@ const getProps = (name) => {
   };
 
   const perTemplate = {
-    nav: {},
+    nav: {
+      logo: logo,
+    },
     header: {
       header: 'Header Section',
     },

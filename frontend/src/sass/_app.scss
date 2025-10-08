@@ -1,14 +1,16 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
 
 * {
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+  Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+
 }
 
 html {
-  font-size: 16px;
+  font-size: 1vw;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -24,7 +26,7 @@ li {
 
 a {
   text-decoration: none;
-  color: inherit;
+  color: #fafafa;
 }
 
 input,
