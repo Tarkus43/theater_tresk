@@ -54,11 +54,14 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'), // shortcut to src folder
+      '@components': path.resolve(__dirname, './src/components'), // shortcut to components folder
+
     },
   },
 
   server: {
     port: 9999, // dev server port
+    historyApiFallback: true, // SPA fallback
     fs: {
       allow: ['src', 'public', 'node_modules'], // allow serving files from parent directory
     },

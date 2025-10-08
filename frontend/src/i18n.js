@@ -15,7 +15,8 @@ i18next
   .use(Backend)
   .use(LanguageDetector)
   .init({
-    fallbackLng: 'en',
+    fallbackLng: 'ru-RU',
+    load: 'languageOnly',
     ns: ['common'],
     debug: true,
     backend: {

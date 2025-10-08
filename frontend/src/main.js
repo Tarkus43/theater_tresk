@@ -17,6 +17,9 @@ import '@/sass/styles.scss';
 import '@/tailwind.css';
 import logo from './assets/Logo_Tresk!.png';
 
+const { VITE_API_URL } = import.meta.env;
+console.log('API URL:', VITE_API_URL);
+
 // register common helpers
 Handlebars.registerHelper('eq', (a, b) => a === b);
 
