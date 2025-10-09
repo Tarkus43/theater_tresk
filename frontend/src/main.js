@@ -15,7 +15,7 @@ import 'material-icons/iconfont/material-icons.css';
 import 'flag-icons/css/flag-icons.min.css';
 import '@/sass/styles.scss';
 import '@/tailwind.css';
-import logo from './assets/Logo_Tresk!.png';
+import logo from '../public/Logo_Tresk!.png';
 
 const { VITE_API_URL } = import.meta.env;
 console.log('API URL:', VITE_API_URL);
