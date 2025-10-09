@@ -1,9 +1,11 @@
 /**
- * entry point for rendering Handlebars templates with internationalization.
+ * entry point for rendering Handlebars templates with internationalization + client-side routing.
  * - imports global styles (normalize, tailwind, icons, custom SCSS)
  * - registers common Handlebars helpers
- * - compiles and mounts each template into #app
+ * - defines SPA routes and which templates compose each "page"
+ * - compiles and mounts templates into #app based on current path
  * - binds i18next to update `[data-lang]` elements on load and language change
+ * - intercepts <a data-link> clicks to navigate without full reload (History API)
  */
 
 import Handlebars from 'handlebars';
@@ -16,29 +18,12 @@ import 'flag-icons/css/flag-icons.min.css';
 import '@/sass/styles.scss';
 import '@/tailwind.css';
 import logo from '../public/Logo_Tresk!.png';
-import { renderRoute, navigateTo } from "./routes";
-
-// document.addEventListener("DOMContentLoaded", () => {
-//   document.body.addEventListener("click", (e) => {
-//     if (e.target.matches("[data-link]")) {
-//       e.preventDefault();
-//       navigateTo(e.target.href);
-//     }
-//   });
-
-//   window.addEventListener("popstate", renderRoute);
-
-//   renderRoute();
-// });
-
 
 const { VITE_API_URL } = import.meta.env;
 console.log('API URL:', VITE_API_URL);
 
-// register common helpers
 Handlebars.registerHelper('eq', (a, b) => a === b);
 
-// template props resolver
 const getProps = (name) => {
   const shared = {
     lang: i18next.language,
@@ -55,22 +40,47 @@ const getProps = (name) => {
     main: {
       main: 'Main Content',
     },
+    about: {
+      title: 'About',
+      text: 'Learn more about us on this page.',
+    },
+    contact: {
+      title: 'Contact',
+      text: 'Contact us through this page.',
+    },
     footer: {},
+    notFound: {
+      title: '404 Not Found',
+      text: 'Page not found.',
+      path: window.location.pathname,
+    },
   };
 
   return { ...shared, ...(perTemplate[name] || {}) };
 };
 
-// mount root
+
+const ROUTE_VIEWS = {
+  '/': ['nav', 'header', 'main', 'footer'],
+  '/about': ['nav', 'about', 'footer'],
+  '/contact': ['nav', 'contact', 'footer'],
+  '/programm': ['nav', 'programm', 'footer'],
+  '/tickets': ['nav', 'tickets', 'footer'],
+  '/contacts': ['nav', 'contacts', 'footer'],
+  '/partners': ['nav', 'partners', 'footer'],
+};
+
+
 const mount = document.getElementById('app');
 
-if (!mount) {
-  console.error('Mount point "#app" not found');
-} else {
-  mount.innerHTML = ''; // cleaning previous content
-
-  const combinedHTML = Object.entries(templates)
-    .map(([name, source]) => {
+function renderTemplates(viewNames) {
+  return viewNames
+    .map((name) => {
+      const source = templates[name];
+      if (!source) {
+        console.warn(`Template "${name}" is missing in templates object`);
+        return '';
+      }
       try {
         return Handlebars.compile(source)(getProps(name));
       } catch (err) {
@@ -79,11 +89,9 @@ if (!mount) {
       }
     })
     .join('');
-
-  mount.innerHTML = combinedHTML;
 }
 
-// bind i18next to update translatable elements
+
 const updateTranslations = () => {
   document.querySelectorAll('[data-lang]').forEach((el) => {
     const key = el.dataset.lang;
@@ -91,5 +99,70 @@ const updateTranslations = () => {
   });
 };
 
-i18next.on('initialized languageChanged', updateTranslations);
-updateTranslations(); // initial trigger
+export function renderRoute() {
+  if (!mount) {
+    console.error('Mount point "#app" not found');
+    return;
+  }
+
+  const path = window.location.pathname;
+  const view = ROUTE_VIEWS[path];
+
+  mount.innerHTML = '<div class="p-4">Loading…</div>';
+
+  if (view) {
+    mount.innerHTML = renderTemplates(view);
+  } else {
+    if (templates['notFound']) {
+      mount.innerHTML = Handlebars.compile(templates['notFound'])(getProps('notFound'));
+    } else {
+      mount.innerHTML = '<h1>404 Not Found</h1><p>Page not found.</p>';
+    }
+  }
+
+  updateTranslations();
+
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+export function navigateTo(url) {
+  const a = document.createElement('a');
+  a.href = url;
+  const pathname = a.pathname;
+
+  history.pushState(null, '', pathname);
+  renderRoute();
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.addEventListener('click', (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+    const link = e.target.closest('a[data-link]');
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    if (!href) return;
+
+    // внешние/спец-ссылки не перехватываем
+    if (/^(https?:)?\/\//.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+
+    e.preventDefault();
+    navigateTo(href);
+  });
+
+  // кнопки браузера назад/вперёд
+  window.addEventListener('popstate', renderRoute);
+
+  // первый рендер
+  renderRoute();
+});
+
+// автообновление переводов при смене языка
+i18next.on('initialized languageChanged', () => {
+  // перерисовка страницы необходима, потому что Handlebars-данные (getProps) содержат текст
+  renderRoute();
+});
+// начальный прогон (на случай, если i18n уже инициализирован)
+updateTranslations();
