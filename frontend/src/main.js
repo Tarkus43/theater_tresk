@@ -16,6 +16,21 @@ import 'flag-icons/css/flag-icons.min.css';
 import '@/sass/styles.scss';
 import '@/tailwind.css';
 import logo from '../public/Logo_Tresk!.png';
+import { renderRoute, navigateTo } from "./routes";
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   document.body.addEventListener("click", (e) => {
+//     if (e.target.matches("[data-link]")) {
+//       e.preventDefault();
+//       navigateTo(e.target.href);
+//     }
+//   });
+
+//   window.addEventListener("popstate", renderRoute);
+
+//   renderRoute();
+// });
+
 
 const { VITE_API_URL } = import.meta.env;
 console.log('API URL:', VITE_API_URL);
