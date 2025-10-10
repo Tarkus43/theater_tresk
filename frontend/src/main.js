@@ -18,9 +18,29 @@ import 'flag-icons/css/flag-icons.min.css';
 import '@/sass/styles.scss';
 import '@/tailwind.css';
 import logo from '../public/Logo_Tresk!.png';
+// import axios from 'axios';
 
 const { VITE_API_URL } = import.meta.env;
 console.log('API URL:', VITE_API_URL);
+
+// const api = axios.create({
+//   baseURL: VITE_API_URL || 'http://localhost:3000/api',
+//   timeout: 5000,
+// })
+
+// const absolutize = (maybePath) =>
+//   /^https?:\/\//.test(maybePath) ? maybePath : new URL(maybePath, VITE_API_URL).href;
+
+
+const ROUTE_VIEWS = {
+  '/': ['nav', 'header', 'main', 'footer'],
+  '/about': ['nav', 'about', 'footer'],
+  '/contact': ['nav', 'contact', 'footer'],
+  '/programm': ['nav', 'programm', 'footer'],
+  '/tickets': ['nav', 'tickets', 'footer'],
+  '/contacts': ['nav', 'contacts', 'footer'],
+  '/partners': ['nav', 'partners', 'footer'],
+};
 
 Handlebars.registerHelper('eq', (a, b) => a === b);
 
@@ -59,16 +79,6 @@ const getProps = (name) => {
   return { ...shared, ...(perTemplate[name] || {}) };
 };
 
-
-const ROUTE_VIEWS = {
-  '/': ['nav', 'header', 'main', 'footer'],
-  '/about': ['nav', 'about', 'footer'],
-  '/contact': ['nav', 'contact', 'footer'],
-  '/programm': ['nav', 'programm', 'footer'],
-  '/tickets': ['nav', 'tickets', 'footer'],
-  '/contacts': ['nav', 'contacts', 'footer'],
-  '/partners': ['nav', 'partners', 'footer'],
-};
 
 
 const mount = document.getElementById('app');
@@ -152,17 +162,13 @@ document.addEventListener('DOMContentLoaded', () => {
     navigateTo(href);
   });
 
-  // кнопки браузера назад/вперёд
   window.addEventListener('popstate', renderRoute);
 
-  // первый рендер
   renderRoute();
 });
 
-// автообновление переводов при смене языка
 i18next.on('initialized languageChanged', () => {
-  // перерисовка страницы необходима, потому что Handlebars-данные (getProps) содержат текст
   renderRoute();
 });
-// начальный прогон (на случай, если i18n уже инициализирован)
+
 updateTranslations();
