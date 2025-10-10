@@ -6,8 +6,7 @@ import about from './about.hbs?raw';
 import programm from './programm.hbs?raw';
 import tickets from './tickets.hbs?raw';
 import contacts from './contacts.hbs?raw';
-import partners from './partners.hbs?raw'
-
+import partners from './partners.hbs?raw';
 
 const templates = { nav, header, main, footer, about, programm, tickets, contacts, partners };
 

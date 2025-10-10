@@ -55,7 +55,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'), // shortcut to src folder
       '@components': path.resolve(__dirname, './src/components'), // shortcut to components folder
-
+      '@public': path.resolve(__dirname, './public'), // shortcut to public folder
     },
   },
 

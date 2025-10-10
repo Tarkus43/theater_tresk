@@ -31,7 +31,6 @@ console.log('API URL:', VITE_API_URL);
 // const absolutize = (maybePath) =>
 //   /^https?:\/\//.test(maybePath) ? maybePath : new URL(maybePath, VITE_API_URL).href;
 
-
 const ROUTE_VIEWS = {
   '/': ['nav', 'header', 'main', 'footer'],
   '/about': ['nav', 'about', 'footer'],
@@ -79,8 +78,6 @@ const getProps = (name) => {
   return { ...shared, ...(perTemplate[name] || {}) };
 };
 
-
-
 const mount = document.getElementById('app');
 
 function renderTemplates(viewNames) {
@@ -100,7 +97,6 @@ function renderTemplates(viewNames) {
     })
     .join('');
 }
-
 
 const updateTranslations = () => {
   document.querySelectorAll('[data-lang]').forEach((el) => {
@@ -144,10 +140,10 @@ export function navigateTo(url) {
   renderRoute();
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
   document.body.addEventListener('click', (e) => {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
+      return;
 
     const link = e.target.closest('a[data-link]');
     if (!link) return;
@@ -156,7 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!href) return;
 
     // внешние/спец-ссылки не перехватываем
-    if (/^(https?:)?\/\//.test(href) || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+    if (/^(https?:)?\/\//.test(href) || href.startsWith('mailto:') || href.startsWith('tel:'))
+      return;
 
     e.preventDefault();
     navigateTo(href);
