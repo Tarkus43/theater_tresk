@@ -56,6 +56,8 @@ const ROUTE_VIEWS = {
 
 
 Handlebars.registerHelper('eq', (a, b) => a === b);
+Handlebars.registerHelper('multiply', (a, b) => a * b);
+
 
 const getProps = (name, extra = {}) => {
   const shared = {
@@ -65,10 +67,23 @@ const getProps = (name, extra = {}) => {
 
   const perTemplate = {
     nav: { logo: logo },
-    header: { header: 'Header Section' },
-    main: { main: 'Main Content' },
-    about: { title: 'About', text: 'Learn more about us on this page.' },
-    contact: { title: 'Contact', text: 'Contact us through this page.' },
+    header: { 
+      header: 'Header Section',
+      spectacleImages: [
+        '/header1.jpg',
+        '/header2.jpg',
+        '/header3.jpg',
+      ],
+     },
+    main: { 
+      main: 'Main Content'
+     },
+    about: { 
+      title: 'About', text: 'Learn more about us on this page.' 
+    },
+    contact: { 
+      title: 'Contact', text: 'Contact us through this page.' 
+    },
     footer: {},
     notFound: { title: '404 Not Found', text: 'Page not found.', path: window.location.pathname },
   };
@@ -135,7 +150,10 @@ export async function renderRoute() {
         location: s.location,
       }));
 
-      extra = { main: { spectacles } };
+      extra = {
+        // header: { spectacleImages: spectacles.map((s) => s.imageUrl) },
+        main: { spectacles },
+      };
     }
 
     if (path === '/programm') {
@@ -151,6 +169,7 @@ export async function renderRoute() {
         tickets_available: s.tickets_available,
         location: s.location,
       }));
+
       extra = { programm: { spectacles } };
     }
 

@@ -33,6 +33,34 @@
         </article>
       {{/each}}
     </div>
+
+    {{!-- Пагинация --}}
+    {{#if pagination}}
+      <nav class="mt-6 flex items-center justify-center gap-2">
+        {{#if pagination.hasPrev}}
+          <a href="/?page={{pagination.prevPage}}" data-link
+             class="px-3 py-2 rounded-lg border border-white/20 hover:bg-white/10">
+            ‹ <span data-lang="prev">Prev</span>
+          </a>
+        {{else}}
+          <span class="px-3 py-2 rounded-lg border border-white/10 opacity-50 cursor-not-allowed">‹ <span data-lang="prev">Prev</span></span>
+        {{/if}}
+
+        <span class="px-3 py-2 text-sm opacity-80">
+          <span data-lang="page">Page</span> {{pagination.page}} / {{pagination.totalPages}}
+        </span>
+
+        {{#if pagination.hasNext}}
+          <a href="/?page={{pagination.nextPage}}" data-link
+             class="px-3 py-2 rounded-lg border border-white/20 hover:bg-white/10">
+            <span data-lang="next">Next</span> ›
+          </a>
+        {{else}}
+          <span class="px-3 py-2 rounded-lg border border-white/10 opacity-50 cursor-not-allowed"><span data-lang="next">Next</span> ›</span>
+        {{/if}}
+      </nav>
+    {{/if}}
+
   {{else}}
     <p class="opacity-70" data-lang="nothing_here_yet">Пока ничего нет…</p>
   {{/if}}
