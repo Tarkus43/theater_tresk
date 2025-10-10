@@ -17,7 +17,7 @@ import 'material-icons/iconfont/material-icons.css';
 import 'flag-icons/css/flag-icons.min.css';
 import '@/sass/styles.scss';
 import '@/tailwind.css';
-import logo from '../public/Logo_Tresk!.png';
+import logo from '/logo_tresk.png';
 // import axios from 'axios';
 
 const { VITE_API_URL } = import.meta.env;
