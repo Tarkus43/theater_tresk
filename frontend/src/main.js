@@ -22,6 +22,14 @@ import axios from 'axios';
 
 const API_ORIGIN = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const API_BASE   = `${API_ORIGIN}/api/`;
+const PER_PAGE = 4;
+
+function getCurrentPage() {
+  const sp = new URLSearchParams(window.location.search);
+  const p = parseInt(sp.get('page') || '1', 10);
+  return Number.isNaN(p) || p < 1 ? 1 : p;
+}
+
 
 const api = axios.create({
   baseURL: `${API_ORIGIN}/api/`,
@@ -59,6 +67,7 @@ Handlebars.registerHelper('eq', (a, b) => a === b);
 Handlebars.registerHelper('multiply', (a, b) => a * b);
 
 
+
 const getProps = (name, extra = {}) => {
   const shared = {
     lang: i18next.language,
@@ -92,7 +101,9 @@ const getProps = (name, extra = {}) => {
 };
 
 
+
 const mount = document.getElementById('app');
+
 
 
 function renderTemplates(viewNames, extraProps = {}) {
@@ -114,12 +125,15 @@ function renderTemplates(viewNames, extraProps = {}) {
 }
 
 
+
 const updateTranslations = () => {
   document.querySelectorAll('[data-lang]').forEach((el) => {
     const key = el.dataset.lang;
     if (key) el.textContent = i18next.t(key);
   });
 };
+
+
 
 export async function renderRoute() {
   if (!mount) {
@@ -136,25 +150,45 @@ export async function renderRoute() {
     let extra = {};
 
     if (path === '/') {
-      const res = await api.get('spectacles/');
-      const list = Array.isArray(res.data) ? res.data : [];
+    const res = await api.get('spectacles/');
+    const list = Array.isArray(res.data) ? res.data : [];
 
-      const spectacles = list.map((s) => ({
-        id: s.id,
-        title: s.title,
-        description: s.description,
-        imageUrl: absolutize(s.image), // "/media/..." -> "http://localhost:8000/media/..."
-        dateFmt: fmtDate(s.date),
-        timeFmt: fmtTime(s.time),
-        tickets_available: s.tickets_available,
-        location: s.location,
-      }));
+    const all = list.map((s) => ({
+      id: s.id,
+      title: s.title,
+      description: s.description,
+      imageUrl: absolutize(s.image),
+      dateFmt: fmtDate(s.date),
+      timeFmt: fmtTime(s.time),
+      tickets_available: s.tickets_available,
+      location: s.location,
+    }));
 
-      extra = {
-        // header: { spectacleImages: spectacles.map((s) => s.imageUrl) },
-        main: { spectacles },
-      };
-    }
+    const totalPages = Math.max(1, Math.ceil(all.length / PER_PAGE));
+    const pageRaw = getCurrentPage();
+    const page = Math.min(pageRaw, totalPages);
+    const start = (page - 1) * PER_PAGE;
+    const pageItems = all.slice(start, start + PER_PAGE);
+
+    const hasPrev = page > 1;
+    const hasNext = page < totalPages;
+
+    extra = {
+      main: {
+        spectacles: pageItems,
+        pagination: {
+          page,
+          totalPages,
+          hasPrev,
+          hasNext,
+          prevPage: hasPrev ? page - 1 : null,
+          nextPage: hasNext ? page + 1 : null,
+        },
+      },
+    };
+}
+
+
 
     if (path === '/programm') {
       const res = await api.get('spectacles/');
@@ -195,14 +229,17 @@ export async function renderRoute() {
 }
 
 
+
 export function navigateTo(url) {
   const a = document.createElement('a');
   a.href = url;
-  const pathname = a.pathname;
+  const full = a.pathname + a.search + a.hash;
 
-  history.pushState(null, '', pathname);
+  history.pushState(null, '', full);
   renderRoute();
 }
+
+
 
 document.addEventListener('DOMContentLoaded', () => {
   document.body.addEventListener('click', (e) => {
@@ -227,8 +264,12 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRoute();
 });
 
+
+
 i18next.on('initialized languageChanged', () => {
   renderRoute();
 });
+
+
 
 updateTranslations();

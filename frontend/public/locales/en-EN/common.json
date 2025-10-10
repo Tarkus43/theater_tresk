@@ -6,6 +6,10 @@
   "programme": "Programme",
   "header_title": "Theater Tresk",
   "header_subtitle": "A small independent theater in the city center",
-  "programm_text": "Programme"
+  "programm_text": "Programme",
+  "next": "Next",
+  "prev": "Prev",
+  "page": "Page",
+  "nothing_here_yet": "Nothing here yet :("
 
 }
