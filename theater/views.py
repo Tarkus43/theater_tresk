@@ -10,3 +10,13 @@ class SpectacleList(APIView):
         spectacles = Spectacle.objects.all()
         serializer = SpectacleSerializer(spectacles, many=True)
         return Response(serializer.data)
+    
+class SpectacleDetail(APIView):
+    def get(self, request, pk):
+        try:
+            spectacle = Spectacle.objects.get(pk=pk)
+        except Spectacle.DoesNotExist:
+            return Response({"error": "Spectacle not found"}, status=404)
+        
+        serializer = SpectacleSerializer(spectacle)
+        return Response(serializer.data)
