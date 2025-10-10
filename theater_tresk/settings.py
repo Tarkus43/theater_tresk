@@ -37,16 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_vite',
     'theater',
     'rest_framework',
+    'corsheaders',
 ]
 
-# DJANGO_VITE_DEV_MODE = DEBUG
-# DJANGO_VITE_DEV_SERVER_PORT = 5173
-# DJANGO_VITE_ASSETS_PATH = BASE_DIR / ''
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,6 +53,17 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:9999",
+    "http://127.0.0.1:9999",
+]
+
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+
+# CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'theater_tresk.urls'
 

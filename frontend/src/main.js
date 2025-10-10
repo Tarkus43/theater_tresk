@@ -18,18 +18,29 @@ import 'flag-icons/css/flag-icons.min.css';
 import '@/sass/styles.scss';
 import '@/tailwind.css';
 import logo from '/logo_tresk.png';
-// import axios from 'axios';
+import axios from 'axios';
 
-const { VITE_API_URL } = import.meta.env;
-console.log('API URL:', VITE_API_URL);
+const API_ORIGIN = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE   = `${API_ORIGIN}/api/`;
 
-// const api = axios.create({
-//   baseURL: VITE_API_URL || 'http://localhost:3000/api',
-//   timeout: 5000,
-// })
+const api = axios.create({
+  baseURL: `${API_ORIGIN}/api/`,
+  timeout: 5000,
+})
 
-// const absolutize = (maybePath) =>
-//   /^https?:\/\//.test(maybePath) ? maybePath : new URL(maybePath, VITE_API_URL).href;
+const absolutize = (maybePath) =>
+  /^https?:\/\//.test(maybePath) ? maybePath : new URL(maybePath, API_BASE).href;
+
+const fmtDate = (iso) =>
+  new Intl.DateTimeFormat(i18next.language || 'en', { year: 'numeric', month: 'long', day: 'numeric' })
+    .format(new Date(iso));
+
+const fmtTime = (hhmmss) => {
+  const [h, m] = String(hhmmss || '').split(':');
+  return `${h ?? '00'}:${m ?? '00'}`;
+};
+
+
 
 const ROUTE_VIEWS = {
   '/': ['nav', 'header', 'main', 'footer'],
@@ -41,46 +52,35 @@ const ROUTE_VIEWS = {
   '/partners': ['nav', 'partners', 'footer'],
 };
 
+
+
+
 Handlebars.registerHelper('eq', (a, b) => a === b);
 
-const getProps = (name) => {
+const getProps = (name, extra = {}) => {
   const shared = {
     lang: i18next.language,
     timestamp: Date.now(),
   };
 
   const perTemplate = {
-    nav: {
-      logo: logo,
-    },
-    header: {
-      header: 'Header Section',
-    },
-    main: {
-      main: 'Main Content',
-    },
-    about: {
-      title: 'About',
-      text: 'Learn more about us on this page.',
-    },
-    contact: {
-      title: 'Contact',
-      text: 'Contact us through this page.',
-    },
+    nav: { logo: logo },
+    header: { header: 'Header Section' },
+    main: { main: 'Main Content' },
+    about: { title: 'About', text: 'Learn more about us on this page.' },
+    contact: { title: 'Contact', text: 'Contact us through this page.' },
     footer: {},
-    notFound: {
-      title: '404 Not Found',
-      text: 'Page not found.',
-      path: window.location.pathname,
-    },
+    notFound: { title: '404 Not Found', text: 'Page not found.', path: window.location.pathname },
   };
 
-  return { ...shared, ...(perTemplate[name] || {}) };
+  return { ...shared, ...(perTemplate[name] || {}), ...(extra[name] || {}) };
 };
+
 
 const mount = document.getElementById('app');
 
-function renderTemplates(viewNames) {
+
+function renderTemplates(viewNames, extraProps = {}) {
   return viewNames
     .map((name) => {
       const source = templates[name];
@@ -89,7 +89,7 @@ function renderTemplates(viewNames) {
         return '';
       }
       try {
-        return Handlebars.compile(source)(getProps(name));
+        return Handlebars.compile(source)(getProps(name, extraProps));
       } catch (err) {
         console.error(`Failed to render template "${name}"`, err);
         return '';
@@ -98,6 +98,7 @@ function renderTemplates(viewNames) {
     .join('');
 }
 
+
 const updateTranslations = () => {
   document.querySelectorAll('[data-lang]').forEach((el) => {
     const key = el.dataset.lang;
@@ -105,7 +106,7 @@ const updateTranslations = () => {
   });
 };
 
-export function renderRoute() {
+export async function renderRoute() {
   if (!mount) {
     console.error('Mount point "#app" not found');
     return;
@@ -116,20 +117,67 @@ export function renderRoute() {
 
   mount.innerHTML = '<div class="p-4">Loading…</div>';
 
-  if (view) {
-    mount.innerHTML = renderTemplates(view);
-  } else {
-    if (templates['notFound']) {
-      mount.innerHTML = Handlebars.compile(templates['notFound'])(getProps('notFound'));
-    } else {
-      mount.innerHTML = '<h1>404 Not Found</h1><p>Page not found.</p>';
+  try {
+    let extra = {};
+
+    // --- простая ветка для главной (/): тянем спектакли и кладём их в main.spectacles
+    if (path === '/') {
+      const res = await api.get('spectacles/');
+      const list = Array.isArray(res.data) ? res.data : [];
+
+      const spectacles = list.map((s) => ({
+        id: s.id,
+        title: s.title,
+        description: s.description,
+        imageUrl: absolutize(s.image), // "/media/..." -> "http://localhost:8000/media/..."
+        dateFmt: fmtDate(s.date),
+        timeFmt: fmtTime(s.time),
+        tickets_available: s.tickets_available,
+        location: s.location,
+      }));
+
+      extra = { main: { spectacles } };
     }
+
+    // --- (опционально) аналогично для /programm, если там нужен полный список
+    if (path === '/programm') {
+      const res = await api.get('spectacles/');
+      const list = Array.isArray(res.data) ? res.data : [];
+      const spectacles = list.map((s) => ({
+        id: s.id,
+        title: s.title,
+        description: s.description,
+        imageUrl: absolutize(s.image),
+        dateFmt: fmtDate(s.date),
+        timeFmt: fmtTime(s.time),
+        tickets_available: s.tickets_available,
+        location: s.location,
+      }));
+      // в programm.hbs ты тогда читаешь {{#with programm}}{{#each spectacles}}...{{/each}}{{/with}}
+      extra = { programm: { spectacles } };
+    }
+
+    let html = '';
+    if (Array.isArray(view)) {
+      html = renderTemplates(view, extra);
+    } else if (view) {
+      // если решишь позже сделать функцию-роутер — оставим хук
+      html = await view(extra);
+    } else {
+      html = templates['notFound']
+        ? Handlebars.compile(templates['notFound'])(getProps('notFound'))
+        : '<h1>404 Not Found</h1><p>Page not found.</p>';
+    }
+
+    mount.innerHTML = html;
+    updateTranslations();
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  } catch (e) {
+    console.error(e);
+    mount.innerHTML = `<div class="p-4 text-red-600">Ошибка загрузки: ${e.message}</div>`;
   }
-
-  updateTranslations();
-
-  window.scrollTo({ top: 0, behavior: 'instant' });
 }
+
 
 export function navigateTo(url) {
   const a = document.createElement('a');
