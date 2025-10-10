@@ -14,6 +14,19 @@ export default {
     './src/templates/**/*.{hbs,handlebars}',
   ],
   safelist: [],
-  theme: {},
+  theme: {
+    extend: {
+      keyframes: {
+        fade: {
+          '0%, 100%': { opacity: '0' },
+          '10%, 40%': { opacity: '1' },
+          '50%, 90%': { opacity: '0' },
+        },
+      },
+      animation: {
+        fade: 'fade 12s infinite ease-in-out',
+      },
+    },
+  },
   plugins: [],
 };

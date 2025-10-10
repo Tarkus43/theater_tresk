@@ -120,7 +120,6 @@ export async function renderRoute() {
   try {
     let extra = {};
 
-    // --- простая ветка для главной (/): тянем спектакли и кладём их в main.spectacles
     if (path === '/') {
       const res = await api.get('spectacles/');
       const list = Array.isArray(res.data) ? res.data : [];
@@ -139,7 +138,6 @@ export async function renderRoute() {
       extra = { main: { spectacles } };
     }
 
-    // --- (опционально) аналогично для /programm, если там нужен полный список
     if (path === '/programm') {
       const res = await api.get('spectacles/');
       const list = Array.isArray(res.data) ? res.data : [];
@@ -153,7 +151,6 @@ export async function renderRoute() {
         tickets_available: s.tickets_available,
         location: s.location,
       }));
-      // в programm.hbs ты тогда читаешь {{#with programm}}{{#each spectacles}}...{{/each}}{{/with}}
       extra = { programm: { spectacles } };
     }
 
@@ -161,7 +158,7 @@ export async function renderRoute() {
     if (Array.isArray(view)) {
       html = renderTemplates(view, extra);
     } else if (view) {
-      // если решишь позже сделать функцию-роутер — оставим хук
+
       html = await view(extra);
     } else {
       html = templates['notFound']
@@ -199,7 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const href = link.getAttribute('href');
     if (!href) return;
 
-    // внешние/спец-ссылки не перехватываем
     if (/^(https?:)?\/\//.test(href) || href.startsWith('mailto:') || href.startsWith('tel:'))
       return;
 
