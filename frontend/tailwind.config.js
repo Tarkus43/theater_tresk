@@ -20,19 +20,19 @@ export default {
       keyframes: {
         fade: {
           '0%, 100%': { opacity: '0' },
-          '10%, 40%': { opacity: '1' },
-          '50%, 90%': { opacity: '0' },
+          '10%, 90%': { opacity: '1' },
         },
-        image__opener: {
+        image_opener: {
           from: { height: '0' },
-          to: { height: '425vh' },
+          to: { height: '425px' },
         },
       },
       animation: {
-        fade: 'fade 16s infinite ease-in-out',
-        opener: 'image__opener 1s ease-in-out',
+        fade: 'fade 16s ease-in-out infinite',
+        opener: 'image_opener 600ms ease-out forwards',
       },
     },
+
   },
   plugins: [],
 };

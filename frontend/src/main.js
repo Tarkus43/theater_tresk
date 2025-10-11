@@ -101,10 +101,8 @@ export async function renderRoute() {
   mount.innerHTML = '<div class="p-4">Loading…</div>';
 
   try {
+
     let extra = await generateExtraContext(path);
-
-
-
 
     let html = '';
     if (Array.isArray(view)) {

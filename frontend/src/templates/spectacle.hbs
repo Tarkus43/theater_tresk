@@ -1,5 +1,13 @@
-<header>
-    <img class="opener" src="{{image}}" alt="">
-    <h1>{{name}}</h1>
+<header class="flex flex-col justify-end items-center w-full h-160 overflow-hidden">
+  <img
+    src="{{image}}"
+    alt="{{name}}"
+    class="w-full h-full object-cover object-top animate-"
+  />
+  <div class="w-full py-6 text-center">
+    <h1 class="text-3xl md:text-5xl font-bold text-black drop-shadow-lg px-4">
+        {{title}}
+    </h1>
+  </div>
 </header>
-<main></main>
+

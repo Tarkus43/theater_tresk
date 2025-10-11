@@ -4,7 +4,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 class Spectacle(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False)
-    description = models.TextField( default='no description yet')
+    description = models.CharField(max_length=50, default='no description yet')
+    full_description = models.TextField( default='no full description yet')
     time = models.TimeField(auto_now=False, auto_now_add=False)
     date = models.DateField(auto_now=False, auto_now_add=False)
     tickets_available = models.IntegerField(default=0, validators=[MinValueValidator(0)])
