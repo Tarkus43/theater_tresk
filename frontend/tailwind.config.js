@@ -8,7 +8,6 @@
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  important: true,
   content: [
     './index.html',
     './src/**/*.{js,jsx,ts,tsx,html}',
@@ -20,19 +19,14 @@ export default {
       keyframes: {
         fade: {
           '0%, 100%': { opacity: '0' },
-          '10%, 90%': { opacity: '1' },
-        },
-        image_opener: {
-          from: { height: '0' },
-          to: { height: '425px' },
+          '10%, 40%': { opacity: '1' },
+          '50%, 90%': { opacity: '0' },
         },
       },
       animation: {
-        fade: 'fade 16s ease-in-out infinite',
-        opener: 'image_opener 600ms ease-out forwards',
+        fade: 'fade 16s infinite ease-in-out',
       },
     },
-
   },
   plugins: [],
 };

@@ -35,7 +35,7 @@
 
             <div class="mt-auto flex flex-wrap gap-1 sm:gap-2">
               <a href="/spectacle?id={{id}}" data-link
-                class=" group-hover:scale-120 text-black px-2 py-1 sm:px-3 sm:py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-[11px] sm:text-sm transition-colors">
+                class=" group-hover:scale-120 !text-white px-2 py-1 sm:px-3 sm:py-2 rounded-lg !bg-amber-600 !hover:bg-amber-700 text-[11px] sm:text-sm transition-colors">
                 <span data-lang="learn_more"></span>
               </a>
             </div>
@@ -50,7 +50,7 @@
 
         {{!-- prev button --}}
         {{#if pagination.hasPrev}}
-          <div class="hover:scale-150">
+          <div class="hover:scale-130">
             <a href="/?page={{pagination.prevPage}}" data-link
              class="">
             ‹ <span class="text-black shadow-amber-700 " data-lang="prev"></span>
@@ -68,7 +68,7 @@
 
         {{!-- next button --}}
         {{#if pagination.hasNext}}
-          <div class="hover:scale-150">
+          <div class="hover:scale-130">
             <a href="/?page={{pagination.nextPage}}" data-link
              class="text-black">
             <span class="text-black " data-lang="next"></span> ›
