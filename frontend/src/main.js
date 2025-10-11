@@ -17,20 +17,11 @@ import 'material-icons/iconfont/material-icons.css';
 import 'flag-icons/css/flag-icons.min.css';
 import '@/sass/styles.scss';
 import '@/tailwind.css';
-
 import logo from '/logo_tresk.png';
-import axios from 'axios';
-
 import { ROUTE_VIEWS, absolutize, getCurrentPage, navigateTo } from './utils/urls';
-import { API_ORIGIN} from './utils/api';
-
+import { api } from './utils/api';
 
 const PER_PAGE = 4;
-
-const api = axios.create({
-  baseURL: `${API_ORIGIN}/api/`,
-  timeout: 5000,
-})
 
 const fmtDate = (iso) =>
   new Intl.DateTimeFormat(i18next.language || 'en', { year: 'numeric', month: 'long', day: 'numeric' })
