@@ -17,27 +17,20 @@ import 'material-icons/iconfont/material-icons.css';
 import 'flag-icons/css/flag-icons.min.css';
 import '@/sass/styles.scss';
 import '@/tailwind.css';
+
 import logo from '/logo_tresk.png';
 import axios from 'axios';
 
-const API_ORIGIN = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-const API_BASE   = `${API_ORIGIN}/api/`;
+import { ROUTE_VIEWS, absolutize, getCurrentPage, navigateTo } from './utils/urls';
+import { API_ORIGIN} from './utils/api';
+
+
 const PER_PAGE = 4;
-
-function getCurrentPage() {
-  const sp = new URLSearchParams(window.location.search);
-  const p = parseInt(sp.get('page') || '1', 10);
-  return Number.isNaN(p) || p < 1 ? 1 : p;
-}
-
 
 const api = axios.create({
   baseURL: `${API_ORIGIN}/api/`,
   timeout: 5000,
 })
-
-const absolutize = (maybePath) =>
-  /^https?:\/\//.test(maybePath) ? maybePath : new URL(maybePath, API_BASE).href;
 
 const fmtDate = (iso) =>
   new Intl.DateTimeFormat(i18next.language || 'en', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -47,19 +40,6 @@ const fmtTime = (hhmmss) => {
   const [h, m] = String(hhmmss || '').split(':');
   return `${h ?? '00'}:${m ?? '00'}`;
 };
-
-
-
-const ROUTE_VIEWS = {
-  '/': ['nav', 'header', 'main', 'footer'],
-  '/about': ['nav', 'about', 'footer'],
-  '/contact': ['nav', 'contact', 'footer'],
-  '/programm': ['nav', 'programm', 'footer'],
-  '/tickets': ['nav', 'tickets', 'footer'],
-  '/contacts': ['nav', 'contacts', 'footer'],
-  '/partners': ['nav', 'partners', 'footer'],
-};
-
 
 
 
@@ -226,17 +206,6 @@ export async function renderRoute() {
     console.error(e);
     mount.innerHTML = `<div class="p-4 text-red-600">Ошибка загрузки: ${e.message}</div>`;
   }
-}
-
-
-
-export function navigateTo(url) {
-  const a = document.createElement('a');
-  a.href = url;
-  const full = a.pathname + a.search + a.hash;
-
-  history.pushState(null, '', full);
-  renderRoute();
 }
 
 
