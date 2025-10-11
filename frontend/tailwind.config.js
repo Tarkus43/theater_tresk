@@ -8,6 +8,7 @@
 
 /** @type {import('tailwindcss').Config} */
 export default {
+  important: true,
   content: [
     './index.html',
     './src/**/*.{js,jsx,ts,tsx,html}',
@@ -22,9 +23,14 @@ export default {
           '10%, 40%': { opacity: '1' },
           '50%, 90%': { opacity: '0' },
         },
+        image__opener: {
+          from: { height: '0' },
+          to: { height: '425vh' },
+        },
       },
       animation: {
         fade: 'fade 16s infinite ease-in-out',
+        opener: 'image__opener 1s ease-in-out',
       },
     },
   },

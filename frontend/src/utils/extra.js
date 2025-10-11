@@ -1,7 +1,6 @@
 import api from './api';
 import { fmtDate, fmtTime } from './format';
-import { absolutize } from './urls';
-import { getCurrentPage, getCurrentPageId } from './urls';
+import { getCurrentPage, getCurrentPageId, absolutize } from './urls';
 
 const PER_PAGE = 4;
 
@@ -53,6 +52,9 @@ export const generateExtraContext = async (path) => {
       const id = getCurrentPageId();
       const response = await api.get(`spectacles/${id}/`);
       const spectacle = response.data;
+      spectacle.image = absolutize(spectacle.image);
+      spectacle.date = fmtDate(spectacle.date);
+      spectacle.time = fmtTime(spectacle.time);
 
       extra = { spectacle };
     }
