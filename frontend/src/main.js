@@ -18,25 +18,12 @@ import 'flag-icons/css/flag-icons.min.css';
 import '@/sass/styles.scss';
 import '@/tailwind.css';
 import logo from '/logo_tresk.png';
-import { ROUTE_VIEWS, absolutize, getCurrentPage, navigateTo } from './utils/urls';
-import { api } from './utils/api';
-
-const PER_PAGE = 4;
-
-const fmtDate = (iso) =>
-  new Intl.DateTimeFormat(i18next.language || 'en', { year: 'numeric', month: 'long', day: 'numeric' })
-    .format(new Date(iso));
-
-const fmtTime = (hhmmss) => {
-  const [h, m] = String(hhmmss || '').split(':');
-  return `${h ?? '00'}:${m ?? '00'}`;
-};
-
-
+import { ROUTE_VIEWS, navigateTo } from './utils/urls';
+import { generateExtraContext } from './utils/extra';
+// import { api } from './utils/api';
 
 Handlebars.registerHelper('eq', (a, b) => a === b);
 Handlebars.registerHelper('multiply', (a, b) => a * b);
-
 
 
 const getProps = (name, extra = {}) => {
@@ -72,12 +59,10 @@ const getProps = (name, extra = {}) => {
 };
 
 
-
 const mount = document.getElementById('app');
 
 
-
-function renderTemplates(viewNames, extraProps = {}) {
+const renderTemplates = (viewNames, extraProps = {}) => {
   return viewNames
     .map((name) => {
       const source = templates[name];
@@ -96,14 +81,12 @@ function renderTemplates(viewNames, extraProps = {}) {
 }
 
 
-
 const updateTranslations = () => {
   document.querySelectorAll('[data-lang]').forEach((el) => {
     const key = el.dataset.lang;
     if (key) el.textContent = i18next.t(key);
   });
 };
-
 
 
 export async function renderRoute() {
@@ -118,71 +101,15 @@ export async function renderRoute() {
   mount.innerHTML = '<div class="p-4">Loading…</div>';
 
   try {
-    let extra = {};
-
-    if (path === '/') {
-    const res = await api.get('spectacles/');
-    const list = Array.isArray(res.data) ? res.data : [];
-
-    const all = list.map((s) => ({
-      id: s.id,
-      title: s.title,
-      description: s.description,
-      imageUrl: absolutize(s.image),
-      dateFmt: fmtDate(s.date),
-      timeFmt: fmtTime(s.time),
-      tickets_available: s.tickets_available,
-      location: s.location,
-    }));
-
-    const totalPages = Math.max(1, Math.ceil(all.length / PER_PAGE));
-    const pageRaw = getCurrentPage();
-    const page = Math.min(pageRaw, totalPages);
-    const start = (page - 1) * PER_PAGE;
-    const pageItems = all.slice(start, start + PER_PAGE);
-
-    const hasPrev = page > 1;
-    const hasNext = page < totalPages;
-
-    extra = {
-      main: {
-        spectacles: pageItems,
-        pagination: {
-          page,
-          totalPages,
-          hasPrev,
-          hasNext,
-          prevPage: hasPrev ? page - 1 : null,
-          nextPage: hasNext ? page + 1 : null,
-        },
-      },
-    };
-}
+    let extra = await generateExtraContext(path);
 
 
 
-    if (path === '/programm') {
-      const res = await api.get('spectacles/');
-      const list = Array.isArray(res.data) ? res.data : [];
-      const spectacles = list.map((s) => ({
-        id: s.id,
-        title: s.title,
-        description: s.description,
-        imageUrl: absolutize(s.image),
-        dateFmt: fmtDate(s.date),
-        timeFmt: fmtTime(s.time),
-        tickets_available: s.tickets_available,
-        location: s.location,
-      }));
-
-      extra = { programm: { spectacles } };
-    }
 
     let html = '';
     if (Array.isArray(view)) {
       html = renderTemplates(view, extra);
     } else if (view) {
-
       html = await view(extra);
     } else {
       html = templates['notFound']
@@ -198,7 +125,6 @@ export async function renderRoute() {
     mount.innerHTML = `<div class="p-4 text-red-600">Ошибка загрузки: ${e.message}</div>`;
   }
 }
-
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -224,12 +150,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRoute();
 });
 
-
-
 i18next.on('initialized languageChanged', () => {
   renderRoute();
 });
-
-
 
 updateTranslations();
