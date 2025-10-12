@@ -31,5 +31,18 @@
         data-lang='partners'
         data-link
       ></a></li>
+    
+    <li>
+      <div class="relative inline-block text-left ml-4">
+        <button id="lang_toggle" class="flex items-center !bg-amber-700 text-white px-4 py-2 rounded-md !hover:bg-amber-900">
+          🌐 <span id="current_lang" class="ml-2 uppercase">EN</span>
+        </button>
+
+        <div id="lang_menu" class="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg z-50 hidden">
+          <button class="block w-full text-left px-4 py-2 hover:bg-gray-100" data-lang-option="en">🇬🇧 EN</button>
+          <button class="block w-full text-left px-4 py-2 hover:bg-gray-100" data-lang-option="ru">🇷🇺 RU</button>
+        </div>
+      </div>
+    </li>
   </ul>
 </nav>

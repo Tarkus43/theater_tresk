@@ -8,6 +8,7 @@
  * - intercepts <a data-link> clicks to navigate without full reload (History API)
  */
 
+
 import Handlebars from 'handlebars';
 import templates from './templates';
 import i18next from './i18n';
@@ -21,6 +22,7 @@ import logo from '/logo_tresk.png';
 import { ROUTE_VIEWS, navigateTo } from './utils/urls';
 import { generateExtraContext } from './utils/extra';
 import validatePurchase from './utils/validatePurchase';
+import { langSwitcher } from './utils/langSwitcher';
 // import { api } from './utils/api';
 
 Handlebars.registerHelper('eq', (a, b) => a === b);
@@ -114,6 +116,9 @@ export async function renderRoute() {
 
     console.log('!!!initializing validation!!!');
     validatePurchase();
+
+    langSwitcher()
+
   } catch (e) {
     console.error(e);
     mount.innerHTML = `<div class="p-4 text-red-600">Ошибка загрузки: ${e.message}</div>`;
@@ -143,8 +148,14 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRoute();
 });
 
-i18next.on('initialized languageChanged', () => {
-  renderRoute();
+
+i18next.on('languageChanged', () => {
+  const elements = document.querySelectorAll('[data-lang]');
+  elements.forEach(el => {
+    const key = el.dataset.lang;
+    if (key) el.textContent = i18next.t(key);
+  });
 });
+
 
 updateTranslations();
