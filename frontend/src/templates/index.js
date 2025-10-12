@@ -9,8 +9,17 @@ import contacts from './contacts.hbs?raw';
 import partners from './partners.hbs?raw';
 import spectacle from './spectacle.hbs?raw';
 
-const templates = { 
-    nav, header, main, footer, about, programm, tickets, contacts, partners, spectacle
+const templates = {
+  nav,
+  header,
+  main,
+  footer,
+  about,
+  programm,
+  tickets,
+  contacts,
+  partners,
+  spectacle,
 };
 
 export default templates;

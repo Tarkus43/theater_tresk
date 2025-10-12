@@ -1,12 +1,11 @@
 import axios from 'axios';
 
-
 export const API_ORIGIN = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-export const API_BASE   = `${API_ORIGIN}/api/`;
+export const API_BASE = `${API_ORIGIN}/api/`;
 
 const api = axios.create({
   baseURL: `${API_ORIGIN}/api/`,
   timeout: 5000,
-})
+});
 
 export default api;

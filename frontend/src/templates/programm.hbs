@@ -1,60 +1,90 @@
-<main class="container mx-auto px-3 py-4 sm:px-4 sm:py-8">
-  <h1 class="text-2xl sm:text-3xl font-bold mb-6 sm:mb-10 text-center sm:text-left" data-lang="programme">
+<main class='container mx-auto px-3 py-4 sm:px-4 sm:py-8'>
+  <h1
+    class='text-2xl sm:text-3xl font-bold mb-6 sm:mb-10 text-center sm:text-left'
+    data-lang='programme'
+  >
     Programme
   </h1>
 
   {{#if spectacles.length}}
-    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6">
+    <div
+      class='grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6'
+    >
       {{#each spectacles}}
-        <article class="rounded-xl shadow bg-white/10 backdrop-blur-md hover:bg-white/20 transition-all duration-300 flex flex-col overflow-hidden">
-          <img src="{{imageUrl}}" alt="{{title}}" class="w-full h-48 object-cover">
-          <div class="p-4 flex flex-col flex-grow">
-            <h3 class="text-lg font-semibold text-amber-400 mb-2">{{title}}</h3>
-            <p class="text-sm opacity-80 mb-3">{{description}}</p>
-            <p class="text-xs opacity-70 mb-1"><span data-lang="date">Date</span>: {{dateFmt}}</p>
-            <p class="text-xs opacity-70 mb-3"><span data-lang="time">Time</span>: {{timeFmt}}</p>
-            <a href="/spectacle?id={{id}}" data-link class="mt-auto px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-sm">
-              <span data-lang="buy_tickets">Buy</span>
+        <article
+          class='rounded-xl shadow bg-white/10 backdrop-blur-md hover:bg-white/20 transition-all duration-300 flex flex-col overflow-hidden'
+        >
+          <img src='{{imageUrl}}' alt='{{title}}' class='w-full h-48 object-cover' />
+          <div class='p-4 flex flex-col flex-grow'>
+            <h3 class='text-lg font-semibold text-amber-400 mb-2'>{{title}}</h3>
+            <p class='text-sm opacity-80 mb-3'>{{description}}</p>
+            <p class='text-xs opacity-70 mb-1'><span data-lang='date'>Date</span>: {{dateFmt}}</p>
+            <p class='text-xs opacity-70 mb-3'><span data-lang='time'>Time</span>: {{timeFmt}}</p>
+            <a
+              href='/spectacle?id={{id}}'
+              data-link
+              class='mt-auto px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-sm'
+            >
+              <span data-lang='buy_tickets'>Buy</span>
             </a>
           </div>
         </article>
       {{/each}}
     </div>
 
-    {{!-- пагинация --}}
+    {{! пагинация }}
     {{#if pagination}}
-      <nav class="mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-sm">
+      <nav class='mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-sm'>
         {{#if pagination.hasPrev}}
-          <a href="/?page={{pagination.prevPage}}" data-link
-             class="px-4 py-2 rounded-xl border border-amber-700 text-amber-700 hover:bg-amber-700 hover:text-white transition">
-            ‹ <span data-lang="prev">Prev</span>
+          <a
+            href='/?page={{pagination.prevPage}}'
+            data-link
+            class='px-4 py-2 rounded-xl border border-amber-700 text-amber-700 hover:bg-amber-700 hover:text-white transition'
+          >
+            ‹
+            <span data-lang='prev'>Prev</span>
           </a>
         {{else}}
-          <span class="px-4 py-2 rounded-xl border border-gray-300 text-gray-400 bg-gray-100 opacity-60 cursor-not-allowed">
-            ‹ <span data-lang="prev">Prev</span>
+          <span
+            class='px-4 py-2 rounded-xl border border-gray-300 text-gray-400 bg-gray-100 opacity-60 cursor-not-allowed'
+          >
+            ‹
+            <span data-lang='prev'>Prev</span>
           </span>
         {{/if}}
 
-        <span class="px-3 py-2 rounded-lg text-gray-700 bg-gray-100 border border-gray-300 font-semibold">
-          <span data-lang="page">Page</span> {{pagination.page}} / {{pagination.totalPages}}
+        <span
+          class='px-3 py-2 rounded-lg text-gray-700 bg-gray-100 border border-gray-300 font-semibold'
+        >
+          <span data-lang='page'>Page</span>
+          {{pagination.page}}
+          /
+          {{pagination.totalPages}}
         </span>
 
         {{#if pagination.hasNext}}
-          <a href="/?page={{pagination.nextPage}}" data-link
-             class="px-4 py-2 rounded-xl border border-amber-700 text-amber-700 hover:bg-amber-700 hover:text-white transition">
-            <span data-lang="next">Next</span> ›
+          <a
+            href='/?page={{pagination.nextPage}}'
+            data-link
+            class='px-4 py-2 rounded-xl border border-amber-700 text-amber-700 hover:bg-amber-700 hover:text-white transition'
+          >
+            <span data-lang='next'>Next</span>
+            ›
           </a>
         {{else}}
-          <span class="px-4 py-2 rounded-xl border border-gray-300 text-gray-400 bg-gray-100 opacity-60 cursor-not-allowed">
-            <span data-lang="next">Next</span> ›
+          <span
+            class='px-4 py-2 rounded-xl border border-gray-300 text-gray-400 bg-gray-100 opacity-60 cursor-not-allowed'
+          >
+            <span data-lang='next'>Next</span>
+            ›
           </span>
         {{/if}}
       </nav>
     {{/if}}
 
   {{else}}
-    <p class="text-center opacity-70 text-base sm:text-lg md:text-xl mt-10">
-      <span data-lang="nothing_here_yet">Пока ничего нет…</span>
+    <p class='text-center opacity-70 text-base sm:text-lg md:text-xl mt-10'>
+      <span data-lang='nothing_here_yet'>Пока ничего нет…</span>
     </p>
   {{/if}}
 </main>

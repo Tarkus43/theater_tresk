@@ -25,7 +25,6 @@ import { generateExtraContext } from './utils/extra';
 Handlebars.registerHelper('eq', (a, b) => a === b);
 Handlebars.registerHelper('multiply', (a, b) => a * b);
 
-
 const getProps = (name, extra = {}) => {
   const shared = {
     lang: i18next.language,
@@ -34,22 +33,20 @@ const getProps = (name, extra = {}) => {
 
   const perTemplate = {
     nav: { logo: logo },
-    header: { 
+    header: {
       header: 'Header Section',
-      spectacleImages: [
-        '/header1.jpg',
-        '/header2.jpg',
-        '/header3.jpg',
-      ],
-     },
-    main: { 
-      main: 'Main Content'
-     },
-    about: { 
-      title: 'About', text: 'Learn more about us on this page.' 
+      spectacleImages: ['/header1.jpg', '/header2.jpg', '/header3.jpg'],
     },
-    contact: { 
-      title: 'Contact', text: 'Contact us through this page.' 
+    main: {
+      main: 'Main Content',
+    },
+    about: {
+      title: 'About',
+      text: 'Learn more about us on this page.',
+    },
+    contact: {
+      title: 'Contact',
+      text: 'Contact us through this page.',
     },
     footer: {},
     notFound: { title: '404 Not Found', text: 'Page not found.', path: window.location.pathname },
@@ -58,9 +55,7 @@ const getProps = (name, extra = {}) => {
   return { ...shared, ...(perTemplate[name] || {}), ...(extra[name] || {}) };
 };
 
-
 const mount = document.getElementById('app');
-
 
 const renderTemplates = (viewNames, extraProps = {}) => {
   return viewNames
@@ -78,8 +73,7 @@ const renderTemplates = (viewNames, extraProps = {}) => {
       }
     })
     .join('');
-}
-
+};
 
 const updateTranslations = () => {
   document.querySelectorAll('[data-lang]').forEach((el) => {
@@ -87,7 +81,6 @@ const updateTranslations = () => {
     if (key) el.textContent = i18next.t(key);
   });
 };
-
 
 export async function renderRoute() {
   if (!mount) {
@@ -101,7 +94,6 @@ export async function renderRoute() {
   mount.innerHTML = '<div class="p-4">Loading…</div>';
 
   try {
-
     let extra = await generateExtraContext(path);
 
     let html = '';
@@ -123,7 +115,6 @@ export async function renderRoute() {
     mount.innerHTML = `<div class="p-4 text-red-600">Ошибка загрузки: ${e.message}</div>`;
   }
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
   document.body.addEventListener('click', (e) => {
