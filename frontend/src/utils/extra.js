@@ -1,6 +1,7 @@
 import api from './api';
 import { fmtDate, fmtTime } from './format';
 import { getCurrentPage, getCurrentPageId, absolutize } from './urls';
+import validatePurchase from './validatePurchase';
 
 const PER_PAGE = 4;
 
@@ -75,6 +76,7 @@ export const generateExtraContext = async (path) => {
     }));
 
     extra = { programm: { spectacles } };
+    validatePurchase();
   }
   return extra;
 };
