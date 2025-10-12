@@ -12,21 +12,47 @@
     >
       {{#each spectacles}}
         <article
-          class='rounded-xl shadow bg-white/10 backdrop-blur-md hover:bg-white/20 transition-all duration-300 flex flex-col overflow-hidden'
+          class='group rounded-xl shadow-lg shadow-black/20 bg-white/10 backdrop-blur-md hover:bg-white/20 transition-all duration-300 flex flex-col overflow-hidden'
         >
-          <img src='{{imageUrl}}' alt='{{title}}' class='w-full h-48 object-cover' />
-          <div class='p-4 flex flex-col flex-grow'>
-            <h3 class='text-lg font-semibold text-amber-400 mb-2'>{{title}}</h3>
-            <p class='text-sm opacity-80 mb-3'>{{description}}</p>
-            <p class='text-xs opacity-70 mb-1'><span data-lang='date'>Date</span>: {{dateFmt}}</p>
-            <p class='text-xs opacity-70 mb-3'><span data-lang='time'>Time</span>: {{timeFmt}}</p>
-            <a
-              href='/spectacle?id={{id}}'
-              data-link
-              class='mt-auto px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-sm'
+          <div class='overflow-hidden rounded-t-xl'>
+            <img
+              src='{{imageUrl}}'
+              alt='{{title}}'
+              loading='lazy'
+              class='w-full h-36 sm:h-48 md:h-56 max-h-50 object-cover rounded-t-xl group-hover:scale-105 transition-transform duration-500'
+            />
+          </div>
+
+          <div class='flex flex-col flex-grow p-3 sm:p-4'>
+            <h3
+              class='text-sm sm:text-base md:text-lg font-semibold mb-1 sm:mb-2 text-amber-400 group-hover:text-amber-600 transition-colors'
             >
-              <span data-lang='buy_tickets'>Buy</span>
-            </a>
+              {{title}}
+            </h3>
+            <p
+              class='text-xs sm:text-sm md:text-base opacity-80 mb-2 sm:mb-3 flex-grow leading-snug'
+            >
+              {{description}}
+            </p>
+
+            <div
+              class='text-[10px] sm:text-xs md:text-sm opacity-70 mb-3 space-y-[2px] sm:space-y-1'
+            >
+              <div><span data-lang='date'>Date</span>: {{dateFmt}}</div>
+              <div><span data-lang='time'>Time</span>: {{timeFmt}}</div>
+              <div><span data-lang='location'>Location</span>: {{location}}</div>
+              <div><span data-lang='tickets_left'>Tickets left</span>: {{tickets_available}}</div>
+            </div>
+
+            <div class='mt-auto flex flex-wrap gap-1 sm:gap-2'>
+              <a
+                href='/spectacle?id={{id}}'
+                data-link
+                class='group-hover:scale-120 !text-white px-2 py-1 sm:px-3 sm:py-2 rounded-lg !bg-amber-600 !hover:bg-amber-700 text-[11px] sm:text-sm transition-colors'
+              >
+                <span data-lang='learn_more'></span>
+              </a>
+            </div>
           </div>
         </article>
       {{/each}}
