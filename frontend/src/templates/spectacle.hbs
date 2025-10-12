@@ -12,7 +12,6 @@
 
 </header>
 
-
 <main class='flex flex-col items-center justify-center w-full'>
   <section class='max-w-5xl mx-auto p-4 text-black !border-4 !border-amber-900 rounded-lg my-10'>
 
@@ -55,37 +54,51 @@
 
   </section>
 
-  <div class="mb-10 w-full flex justify-center items-center">
-    <form id="purchase_form" class="flex flex-col gap-4 border-4 border-amber-700 rounded-2xl p-20 max-w-md w-full">
-      <label for="user_name" class="text-sm font-semibold">Name</label>
+  <div class='mb-10 w-full flex justify-center items-center'>
+    <form
+      id='purchase_form'
+      class='flex flex-col gap-4 border-4 border-amber-700 rounded-2xl p-20 max-w-md w-full'
+    >
+      <label for='user_name' class='text-sm font-semibold'>Name</label>
       <input
-        id="user_name"
-        type="text"
-        name="user_name"
-        class="border rounded p-2"
-        placeholder="Your name"
+        id='user_name'
+        type='text'
+        name='user_name'
+        class='border rounded p-2'
+        placeholder='Your name'
       />
 
+      <label for='user_surname'>Surname</label>
       <input
-        id="user_surname"
-        type="text"
-        name="user_surname"
-        class="border rounded p-2"
-        placeholder="Your surname"
+        id='user_surname'
+        type='text'
+        name='user_surname'
+        class='border rounded p-2'
+        placeholder='Your surname'
       />
 
-      <label for="user_email" class="text-sm font-semibold">Email</label>
+      <label for='user_email' class='text-sm font-semibold'>Email</label>
       <input
-        id="user_email"
-        type="email"
-        name="user_email"
-        class="border rounded p-2"
-        placeholder="you@example.com"
+        id='user_email'
+        type='email'
+        name='user_email'
+        class='border rounded p-2'
+        placeholder='you@example.com'
+      />
+
+      <label for='user_quantity'>quantity</label>
+      <input
+        id='user_quantity'
+        type='number'
+        step='1'
+        name='user_quantity'
+        class='border rounded p-2'
+        placeholder='0'
       />
 
       <button
-        type="submit"
-        class="mt-4 !bg-amber-700 !text-white py-2 px-4 rounded hover:bg-amber-900 transition"
+        type='submit'
+        class='mt-4 !bg-amber-700 !text-white py-2 px-4 rounded hover:bg-amber-900 transition'
       >
         Buy ticket
       </button>

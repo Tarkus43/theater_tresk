@@ -20,6 +20,7 @@ import '@/tailwind.css';
 import logo from '/logo_tresk.png';
 import { ROUTE_VIEWS, navigateTo } from './utils/urls';
 import { generateExtraContext } from './utils/extra';
+import validatePurchase from './utils/validatePurchase';
 // import { api } from './utils/api';
 
 Handlebars.registerHelper('eq', (a, b) => a === b);
@@ -110,6 +111,9 @@ export async function renderRoute() {
     mount.innerHTML = html;
     updateTranslations();
     window.scrollTo({ top: 0, behavior: 'instant' });
+
+    console.log('!!!initializing validation!!!');
+    validatePurchase();
   } catch (e) {
     console.error(e);
     mount.innerHTML = `<div class="p-4 text-red-600">Ошибка загрузки: ${e.message}</div>`;
