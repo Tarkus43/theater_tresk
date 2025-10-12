@@ -22,6 +22,22 @@ const validatePurchase = () => {
             errorMessage: 'Name must be less than 50 characters',
             },
         ])
+        .addField('#user_surname', [
+            {
+            rule: 'required',
+            errorMessage: 'Surname is required',
+            },
+            {
+            rule: 'minLength',
+            value: 2,
+            errorMessage: 'Surname must be at least 2 characters',
+            },
+            {
+            rule: 'maxLength',
+            value: 50,
+            errorMessage: 'Surname must be less than 50 characters',
+            },
+        ])
         .addField('#user_email', [
             {
             rule: 'required',

@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.validators import MinValueValidator
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser
+from django.db import transaction
+from django.db.models import F
+
 
 class Spectacle(models.Model):
     title = models.CharField(max_length=100, null=False, blank=False)
@@ -20,10 +23,21 @@ class Spectacle(models.Model):
 class Ticket(models.Model):
     spectacle = models.ForeignKey("theater.Spectacle",on_delete=models.CASCADE)
     name = models.CharField(max_length=20, blank=False, null=False)
-    surname = models.CharField(max_length=50, blank=False, name=False)
+    surname = models.CharField(max_length=50, blank=False)
     email = models.EmailField(max_length=254)
     quantity = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        with transaction.atomic():
+            spectacle = Spectacle.objects.select_for_update().get(pk=self.spectacle.pk)
+
+            if spectacle.tickets_available < self.quantity:
+                raise ValueError("Not enough tickets available")
+
+            spectacle.tickets_available = spectacle.tickets_available - self.quantity
+            spectacle.save()
+            return super().save(*args, **kwargs) 
 
 class Partner(models.Model):
     name = models.CharField(max_length=200)
