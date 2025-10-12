@@ -3,6 +3,8 @@ from django.views import View
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.core.mail import send_mail
+from django.conf import settings
 from .models import Spectacle
 from .api.serializers import SpectacleSerializer, TicketSerializer
 
@@ -13,6 +15,8 @@ class SpectacleList(APIView):
         serializer = SpectacleSerializer(spectacles, many=True)
         return Response(serializer.data)
     
+
+
 class SpectacleDetail(APIView):
     
     def get(self, request, pk):
@@ -24,6 +28,8 @@ class SpectacleDetail(APIView):
         serializer = SpectacleSerializer(spectacle)
         return Response(serializer.data)
     
+
+
 class BuyTicketView(APIView):
     serializer_class = TicketSerializer
 
@@ -49,6 +55,27 @@ class BuyTicketView(APIView):
         if serializer.is_valid():
             try:
                 ticket = serializer.save()
+
+                
+                subject = f"Подтверждение покупки — {ticket.spectacle.title}"
+                message = (
+                    f"Здравствуйте, {ticket.name} {ticket.surname}!\n\n"
+                    f"Вы успешно купили {ticket.quantity} билет(ов) на спектакль «{ticket.spectacle.title}».\n"
+                    f"Дата: {getattr(ticket.spectacle, 'date', 'уточняется')}\n"
+                    f"Место: {getattr(ticket.spectacle, 'location', 'уточняется')}\n\n"
+                    f"Осталось билетов: {ticket.spectacle.tickets_available}\n\n"
+                    "Спасибо, что выбрали Театр Трёск!\n"
+                )
+                send_mail(
+                    subject,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL, 
+                    [ticket.email],                
+                    fail_silently=False,
+)
+
+
+
                 return Response({
                     "status": "success",
                     "message": "Ticket successfully purchased",
