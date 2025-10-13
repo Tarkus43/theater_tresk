@@ -5,8 +5,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Spectacle
-from .api.serializers import SpectacleSerializer, TicketSerializer
+from .models import Spectacle, Partner
+from .api.serializers import SpectacleSerializer, TicketSerializer, PartnerSerializer
+
+class PartnersListView(APIView):
+
+    def get(self, request):
+        partners = Partner.objects.all()
+        serializer = PartnerSerializer(partners, many=True)
+        return Response(serializer.data)
+
 
 class SpectacleList(APIView):
     
@@ -15,7 +23,6 @@ class SpectacleList(APIView):
         serializer = SpectacleSerializer(spectacles, many=True)
         return Response(serializer.data)
     
-
 
 class SpectacleDetail(APIView):
     
@@ -28,7 +35,6 @@ class SpectacleDetail(APIView):
         serializer = SpectacleSerializer(spectacle)
         return Response(serializer.data)
     
-
 
 class BuyTicketView(APIView):
     serializer_class = TicketSerializer
@@ -64,7 +70,7 @@ class BuyTicketView(APIView):
                     f"Дата: {getattr(ticket.spectacle, 'date', 'уточняется')}\n"
                     f"Место: {getattr(ticket.spectacle, 'location', 'уточняется')}\n\n"
                     f"Осталось билетов: {ticket.spectacle.tickets_available}\n\n"
-                    "Спасибо, что выбрали Театр Трёск!\n"
+                    "Спасибо, что выбрали Театр Треск!\n"
                 )
                 send_mail(
                     subject,
