@@ -78,5 +78,21 @@ export const generateExtraContext = async (path) => {
     extra = { programm: { spectacles } };
     validatePurchase();
   }
+
+  // here is the partners page
+  if (path === '/partners') {
+    const response = await api.get('partners/');
+    const list = Array.isArray(response.data) ? response.data : [];
+    const partners = list.map((partner) => ({
+      id: partner.id,
+      name: partner.name,
+      website: partner.website,
+      logoUrl: absolutize(partner.logo),
+      description: partner.description,
+    }));
+
+    extra = { partners };
+  }
+
   return extra;
 };
