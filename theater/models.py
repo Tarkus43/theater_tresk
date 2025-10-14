@@ -15,6 +15,9 @@ class Spectacle(models.Model):
     image = models.ImageField()
     location = models.CharField(max_length=200)
 
+    class Meta:
+        ordering = ['-date']
+
 
     @property 
     def is_sold_out(self):

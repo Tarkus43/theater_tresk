@@ -28,12 +28,21 @@
 
 
 
-.about_header{
-  margin-top: 8vh;
+.about_main{
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  padding-left: 10rem;
+  // margin-bottom: 5vh;
+  background-color: #5d543d26;
+  height: 100%;
+}
+
+.about_title{
+  font-size: 3rem;
+  margin-top: 10vw;
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.506);
 }
 
 .about_article_story{
@@ -64,7 +73,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: solid 1px;
+  // border: solid 1px;
   padding: 5vw;
   border-radius: 10px;
   box-shadow: 10px 10px 10px black;
@@ -81,6 +90,7 @@
 
 .about_text_story{
   max-width: 100%;
+  font-size: 1rem;
 }
 
 
@@ -109,7 +119,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: solid 1px;
+  // border: solid 1px;
   padding: 5vw;
   border-radius: 10px;
   box-shadow: 10px 10px 10px black;
@@ -122,6 +132,8 @@
 
 .about_text_team{
   max-width: 100%;
+  font-size: 1rem;
+
 }
 
 .about_info_team,
@@ -162,7 +174,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: solid 1px;
+  // border: solid 1px;
   padding: 5vw;
   border-radius: 10px;
   box-shadow: 10px 10px 10px black;
@@ -171,6 +183,8 @@
 
 .about_text_reason{
   max-width: 100%;
+  font-size: 1rem;
+
 }
 
 .about_info_reason,
